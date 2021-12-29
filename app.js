@@ -51,23 +51,6 @@ app.get('/paystack/callback', (req,res) => {
         }
         response = JSON.parse(body);        
 
-        const data = _.at(response.data, ['reference', 'amount','customer.email', 'metadata.full_name']);
-
-        [reference, amount, email, full_name] =  data;
-        
-        newBuyer = {reference, amount, email, full_name}
-
-        const buyer = new Buyer(newBuyer)
-
-        buyer.save().then((buyer)=>{
-            if(!buyer){
-                return res.redirect('/error');
-            }
-            
-             res.redirect('/receipt/'+buyer._id);
-        }).catch((e)=>{
-            res.redirect('/error');
-        })
     })
 });
 
